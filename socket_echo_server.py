@@ -5,7 +5,7 @@ import sys
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = ('210.213.231.10', 14355)
+server_address = ('210.213.231.10', 14345)
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 
@@ -37,8 +37,8 @@ while True:
                                 result = int(n1) + int(n2)
                                 message = 'OK {}\n'.format(result)
                                 connection.sendall(message)
-                            elif operation == 'SUB\n':
-                                result = int(n1) - int(n2)
+                            elif operation == 'SUB':
+                                result = int(n2) - int(n1)
                                 message = 'OK {}\n'.format(result)
                                 connection.sendall(message)
                             elif operation == 'MUL':
@@ -47,7 +47,7 @@ while True:
                                 connection.sendall(message)
                             elif operation == 'DIV':
                                 if int(n2) == 0:
-                                    message = 'ERR Diviosion by {}\n'.format(int(n2))
+                                    message = 'ERR Division by {}\n'.format(int(n2))
                                     connection.sendall(message)
                                 else:
                                     result = int(n1) / int(n2)
@@ -87,7 +87,7 @@ while True:
                             connection.sendall(message)  
                     else:
                         print >>sys.stderr, 'ERR unknown command {}\n'.format(operation)
-                        message = 'ERR unknown command {}'.format(operation)
+                        message = 'ERR unknown command {}\n'.format(operation)
                         connection.sendall(message)
                 elif len(data) == 1:
                     operation = str(data[0].decode('UTF-8').strip())
@@ -98,7 +98,7 @@ while True:
                                     \tSUB <N1> <N2> - to subtract N2 from N1\n\
                                     \tMUL <N1> <N2> - to multiply N1 by N2\n\
                                     \tDIV <N1> <N2> - to divide N1 by N2\n\
-                                    \tHELP [command] - to display the syntax and semantics of a specific command. If no command is specified, it will display all the available commands and their meanings\n\
+                                    \tHELP [command] - to display the syntax and semantics of a specific command.\n\tIf no command is specified, it will display all the available commands and their meanings\n\
                                     \tQUIT - to end the current session of the arithmetic server\n'
                         connection.sendall(message)
                     elif operation == 'QUIT':
